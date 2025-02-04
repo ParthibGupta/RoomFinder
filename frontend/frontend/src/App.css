@@ -40,3 +40,7 @@
 .read-the-docs {
   color: #888;
 }
+
+.pac-container {
+  z-index: 1500 !important; /* Ensure suggestions appear above the modal */
+}

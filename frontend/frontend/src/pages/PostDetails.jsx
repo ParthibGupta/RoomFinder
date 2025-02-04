@@ -7,7 +7,7 @@ const PostDetails = () => {
   const [post, setPost] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/post/${postId}`)
+    axios.get(`http://localhost:3000/api/post/${postId}`)
       .then((response) => setPost(response.data))
       .catch((error) => console.error('Error fetching post:', error));
   }, [postId]);

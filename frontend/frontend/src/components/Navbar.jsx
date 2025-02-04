@@ -1,13 +1,18 @@
-import { Box, Flex, Text, Link } from '@chakra-ui/react';
+import { Box, Flex, Text, Link, Spacer } from '@chakra-ui/react';
+import AuthButtons from './AuthButtons';
 
 const Navbar = () => {
   return (
-    <Box bg="teal.500" p={4} color="white">
-      <Flex justify="space-between" align="center" maxW="1200px" mx="auto">
-        <Text fontSize="xl" fontWeight="bold">RoomFinder</Text>
+    <Box bg="gray.500" p={4} color="white">
+      <Flex align="center" maxW="1200px" mx="auto">
+        <Link to="/">
+          <Text fontSize="xl" fontWeight="bold">RoomFinder</Text>
+        </Link>
+        <Spacer />
         <Flex gap={4}>
-          <Link href="/posts" fontWeight="medium">Posts</Link>
-          <Link href="/me" fontWeight="medium">My Profile</Link>
+          <Link href="/posts">Posts</Link>
+          <Link href="/me">My Profile</Link>
+          <AuthButtons />
         </Flex>
       </Flex>
     </Box>

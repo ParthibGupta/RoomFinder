@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import Profile from '../components/Profile'
 const Me = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/user/get', {
+    axios.get('http://localhost:3000/api/user/get', {
       headers: { Authorization: `Bearer YOUR_AUTH_TOKEN` }
     })
       .then((response) => setUser(response.data))
@@ -16,9 +16,7 @@ const Me = () => {
 
   return (
     <div>
-      <h2 className="text-xl font-bold">Your Profile</h2>
-      <p>Name: {user.name}</p>
-      <p>Email: {user.email}</p>
+      <Profile/>
     </div>
   );
 };

@@ -1,0 +1,4 @@
+.pac-container {
+    z-index: 1500 !important; /* Make sure this value is higher than your modal's z-index */
+  }
+  
