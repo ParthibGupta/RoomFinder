@@ -12,6 +12,7 @@ import {
   ModalFooter,
   ModalCloseButton,
   useDisclosure,
+  useToast
 } from "@chakra-ui/react";
 
 import RoomCard from "../components/RoomCard";
@@ -31,39 +32,44 @@ const Posts = () => {
   });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
 
   useEffect(() => {
     axios
       .get("http://localhost:3000/api/post")
-      .then((response) => setPosts(response.data))
-      .catch((error) => console.error("Error fetching posts:", error));
+      .then((response) => {
+        if (response.data.length > 0) {
+          console.log(response.data)
+          setPosts(response.data);
+
+        } else {
+          toast({
+            title: "No rooms available.",
+            status: "info",
+            duration: 3000,
+            isClosable: true,
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching posts:", error);
+        toast({
+          title: "Error fetching posts.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      });
   }, []);
 
   const handleSubmit = async () => {
-    try {
-      const postPayload = {
-        heading: formData.heading,
-        description: formData.description,
-        photos: formData.photos,
-        rent: [formData.rent],
-        location: [parseFloat(formData.latitude), parseFloat(formData.longitude)],
-        address: formData.address,
-      };
-
-      await axios.post("http://localhost:3000/api/post", postPayload, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const { data } = await axios.get("http://localhost:3000/api/post");
-      setPosts(data);
-
-      onClose();
-    } catch (error) {
-      console.error("Error creating post:", error);
-    }
+    console.log("Here in Posts.jsx code");
+    onClose();
   };
+
+  useEffect(() => {
+    console.log(posts);
+  }, [posts]);
 
   return (
     <Box p={4}>
@@ -75,9 +81,13 @@ const Posts = () => {
       </Button>
 
       <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" }} gap={6}>
-        {posts.map((post) => (
-          <RoomCard key={post.id} post={post} />
-        ))}
+        {posts.length > 0 ? (
+          posts.map((post) => (
+            <RoomCard key={post.id} room={post} />
+          ))
+        ) : (
+          <p>No rooms available</p>
+        )}
       </Grid>
 
       <Modal isOpen={isOpen} onClose={onClose}>

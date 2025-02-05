@@ -27,8 +27,10 @@ const createPostTable = `
         photos TEXT[],
         rent NUMERIC[],
         location DECIMAL[], -- latitude and longitude
-        owner_id VARCHAR NOT NULL, -- Foreign key to the User table
-        CONSTRAINT fk_user FOREIGN KEY (owner_id) REFERENCES "User"(id) ON DELETE CASCADE
+        owner_id VARCHAR NOT NULL,
+        fullAddress VARCHAR,
+        owner_name VARCHAR,
+        suburb VARCHAR
     );
 `;
 

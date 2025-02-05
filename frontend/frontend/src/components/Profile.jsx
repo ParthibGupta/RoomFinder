@@ -9,7 +9,7 @@ const Profile = () => {
     isAuthenticated && (
       <Box p={8}>
         <Avatar name={user.name} src={user.picture} size="xl" />
-        <Text fontSize="2xl" mt={4}>{user.name}</Text>
+        <Text fontSize="2xl" mt={4}>{user.nickname}</Text>
         <Text fontSize="lg">{user.email}</Text>
       </Box>
     )
