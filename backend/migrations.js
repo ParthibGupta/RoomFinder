@@ -1,15 +1,6 @@
 require('dotenv').config();
-const { Client } = require('pg');
+const db = require('./db');
 
-const client = new Client({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT,
-});
-
-// Define Tables
 const createUserTable = `
     CREATE TABLE IF NOT EXISTS "User" (
         id VARCHAR PRIMARY KEY,
@@ -36,21 +27,16 @@ const createPostTable = `
 
 const runMigrations = async () => {
     try {
-        await client.connect();
-        console.log('Connected to the database');
-
         // Create tables
-        await client.query(createUserTable);
+        await db.query(createUserTable);
         console.log('User table created or already exists.');
 
-        await client.query(createPostTable);
+        await db.query(createPostTable);
         console.log('Post table created or already exists.');
 
-        await client.end();
-        console.log('Disconnected from the database');
     } catch (err) {
         console.error('Error running migrations:', err);
-        await client.end();
+        await db.end();
     }
 };
 
