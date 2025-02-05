@@ -126,12 +126,12 @@ const RoomForm = ({ formData, setFormData, onSubmit, onClose }) => {
       };
 
       // Send data to API endpoint
-      const res = await axios.post("http://localhost:3000/api/post", postData);
+      const res = await axios.post(import.meta.env.VITE_ROOT_API_URL + "/api/post", postData);
       console.log(res)
       if (res.status === 201) {
         toast({
-          title: "Post Created",
-          description: "Your post has been successfully created.",
+          title: "Room Listed",
+          description: "Your listing has been successfully created.",
           status: "success",
           duration: 3000,
           isClosable: true,

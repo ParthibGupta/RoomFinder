@@ -18,7 +18,7 @@ import {
 import RoomCard from "../components/RoomCard";
 import RoomForm from "../components/RoomForm";
 import axios from "axios";
-
+const rootURL = import.meta.env.VITE_ROOT_API_URL
 const Posts = () => {
   const [posts, setPosts] = useState([]);
   const [formData, setFormData] = useState({
@@ -35,8 +35,9 @@ const Posts = () => {
   const toast = useToast();
 
   useEffect(() => {
+    console.log(rootURL);
     axios
-      .get("http://localhost:3000/api/post")
+      .get(`${import.meta.env.VITE_ROOT_API_URL}/api/post/`)
       .then((response) => {
         if (response.data.length > 0) {
           console.log(response.data)
