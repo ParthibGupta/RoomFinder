@@ -10,10 +10,17 @@ import {
   IconButton,
   Flex,
   Spinner,
-  useBreakpointValue,
+  HStack
 } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import { MdLocationOn } from 'react-icons/md';
+
+const mapContainerStyle = {
+  width: '100%',
+  height: '300px',
+};
 
 const RoomDetails = () => {
   const { postId } = useParams();
@@ -42,6 +49,11 @@ const RoomDetails = () => {
   const handleGoBack = () => {
     navigate(-1);
   };
+
+  // Load Google Maps API
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+  });
 
   if (!post) return <Spinner size="xl" />;
 
@@ -106,7 +118,12 @@ const RoomDetails = () => {
             <Text fontSize={{ base: '2xl', md: '3xl' }} fontWeight="bold">{post.heading}</Text>
             <Text fontSize="lg" color="gray.700">{post.description}</Text>
             <Text fontSize="lg" fontWeight="bold">${post.rent[0]} per week</Text>
-            <Text fontSize="md" color="gray.600">{post.fulladdress}</Text>
+            <HStack fontSize="sm" spacing={1}>
+            {/* Location Icon and Address */}
+              <MdLocationOn size={16} color="gray" />
+              <Text fontSize="md" color="gray.600">{post.fulladdress}</Text>
+            </HStack>
+            
             <Text fontSize="md" color="gray.600">Owner: {post.owner_name}</Text>
           </Stack>
 
@@ -120,6 +137,19 @@ const RoomDetails = () => {
           </Button>
         </Box>
       </Flex>
+
+      {/* Google Maps */}
+      {isLoaded && post.location && (
+        <Box mt="6" borderRadius="md" overflow="hidden" boxShadow="lg">
+          <GoogleMap
+            mapContainerStyle={mapContainerStyle}
+            center={{ lat: post.location[0], lng: post.location[1] }}
+            zoom={15}
+          >
+            <Marker position={{ lat: post.location[0], lng: post.location[1] }} />
+          </GoogleMap>
+        </Box>
+      )}
     </Box>
   );
 };
